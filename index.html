@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total de Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        #totalUsers {
+            font-size: 2em;
+            color: #007BFF;
+        }
+        .loading {
+            font-size: 1.5em;
+            color: #ff6347;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Total de Usuários</h1>
+    <div id="totalUsers" class="loading">Carregando...</div>
+
+    <script>
+        // URLs das APIs
+        const urls = [
+            "https://ffmembros.online/api.php?total_users",
+            "https://ffmembros1.online/api.php?total_users",
+            "https://extremeemulator.site/api.php?total_users",
+            "https://painelpkdo.site/api.php?total_users",
+            "https://apksvision.online/api.php?total_users"
+        ];
+
+        // Função para fazer requisição HTTP GET e retornar o total_users
+        async function getTotalUsers(url) {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return parseInt(data.total_users) || 0;
+            } catch (error) {
+                return 0; // Em caso de erro, retorna 0
+            }
+        }
+
+        // Função para somar total_users de todas as APIs
+        async function sumTotalUsers() {
+            let totalUsers = 0;
+
+            // Loop por todas as URLs e somar os valores
+            for (const url of urls) {
+                const users = await getTotalUsers(url);
+                totalUsers += users;
+            }
+
+            // Exibir o total de usuários no HTML
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('totalUsers').classList.remove('loading');
+        }
+
+        // Chamar a função assim que a página carregar
+        sumTotalUsers();
+    </script>
+
+</body>
+</html>
